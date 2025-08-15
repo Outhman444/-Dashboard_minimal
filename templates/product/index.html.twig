@@ -1,0 +1,169 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des produits{% endblock %}
+
+{% block body %}
+<style>
+:root{
+  --red: #c40000;
+  --green: #3dad48;
+  --thead: #f8f8f8;
+}
+.container_table{
+  max-width: 900px;
+  margin: 0px auto;
+  overflow-x: hidden; 
+  overflow-y: visible; 
+  padding: 0 10px;
+}
+.titre{
+  margin-bottom: 4px;
+  color: #353b44;
+  font-size: 1.8rem;
+}
+.btn-primary{
+  background:#353b44;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+.btn-primary:hover{
+  background: #18191bff;
+}
+table{
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  table-layout: fixed;
+  word-wrap: break-word;
+  font-size: 0.85rem;
+  overflow: visible;
+}
+thead{
+  background: var(--thead);
+}
+th, td{
+  padding: 8px 6px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  overflow-wrap: break-word;
+  white-space: normal;
+}
+.actions a{
+  padding: 4px 8px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-size: 12px;
+}
+.actions a.edit{
+  background: var(--green);
+  color: #fff;
+}
+.actions a.delete{
+  background: var(--red);
+  color: #fff;
+}
+.actions a:hover{
+  opacity: 0.85;
+}
+.footer-table {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.footer-table .pagination {
+  flex-grow: 1;
+  text-align: left;
+  margin-left: 45px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+}
+.pagination a {
+  color: gray;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: background-color 0.3s ease;
+}
+.pagination span.current {
+  color: black;
+  font-weight: bold;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #000;
+  background-color: #e0e0e0;
+}
+.pagination a:hover {
+  background-color: #f0f0f0;
+  border-color: #ccc;
+  color: #333;
+}
+.flash-success {
+		color: green;
+		margin-bottom: 15px;
+	}
+</style>
+
+<div class="container_table">
+  {% for message in app.flashes('success') %}
+	<div class="flash-success">{{ message }}</div>
+{% endfor %}
+
+  <h1 class="titre">Liste des produits</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nom Produit</th>
+        <th>Prix</th>
+        <th>Quantité</th>
+        <th>Statut</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+   <tbody>
+  {% set hasActive = false %}
+  {% for product in pagination %}
+    {% if product.status == 1 %}
+      {% set hasActive = true %}
+      <tr>
+        <td>{{ product.nom }}</td>
+        <td>{{ product.prix }} MAD</td>
+        <td>{{ product.quantite }}</td>
+        <td>Actif</td>
+        <td class="actions">
+          <a href="{{ path('product_edit', {'id': product.id}) }}" class="edit">Modifier</a>
+          <a href="{{ path('product_update_status', {'id': product.id}) }}" class="delete">Supprimer</a>
+        </td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+
+  {% if not hasActive %}
+    <tr>
+      <td colspan="5">Aucun produit actif trouvé.</td>
+    </tr>
+  {% endif %}
+</tbody>
+
+  </table>
+
+  <div class="footer-table">
+    <a href="{{ path('product_new') }}" class="btn btn-primary">Ajouter un produit</a>
+    <div class="pagination">
+      {{ knp_pagination_render(pagination) }}
+    </div>
+  </div>
+</div>
+{% endblock %}
