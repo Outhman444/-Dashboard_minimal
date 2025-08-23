@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,15 +18,13 @@ final class ProductController extends AbstractController
 
 {
    
-#[Route('/products/{page}', name: 'app_products', requirements: ['page' => '\d+'], defaults: ['page' => 1])]
-    public function index(int $page, EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+#[Route('/products/{page}', name: 'app_products', requirements: ['page' => '\\d+'], defaults: ['page' => 1])]
+    public function index(int $page, ProductRepository $repo, PaginatorInterface $paginator, Request $request): Response
     {
 
 
-        #hna tartib prduit mn akbar id
-         $queryBuilder = $em->getRepository(Product::class)
-            ->createQueryBuilder('p')
-            ->orderBy('p.id', 'DESC');
+        #hna tartib prduit mn akbar id 
+        $queryBuilder = $repo->createListQueryBuilder();
 
         $pagination = $paginator->paginate(
             $queryBuilder, 

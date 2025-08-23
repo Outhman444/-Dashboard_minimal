@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}supprimée  la catégorie{% endblock %}
+
+{% block body %}
+    <style>
+        .titre{color:#101317;font-weight:bold;margin-bottom:20px}
+        .flash-success{color:green;margin-bottom:15px}
+        .flash-error{color:red;margin-bottom:15px}
+        form{width:50%;margin-top:20px}
+        button{background-color:#d32f2f;color:#fff;padding:12px 24px;border:none;border-radius:4px;font-weight:bold;font-size:16px;cursor:pointer;transition:background-color .3s ease}
+        button:hover{background-color:#b71c1c}
+        a.cancel-link{margin-left:15px;font-weight:bold;color:#555;text-decoration:none;line-height:38px}
+        a.cancel-link:hover{text-decoration:underline;color:#101317}
+    </style>
+
+    <h1 class="titre">supprimée  la catégorie : {{ categorie.nom }}</h1>
+
+    {% for message in app.flashes('success') %}
+        <div class="flash-success">{{ message }}</div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="flash-error">{{ message }}</div>
+    {% endfor %}
+
+    <form action="{{ path('categorie_update_status', {'id': categorie.id}) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimée  cette catégorie ?');">
+        <input type="hidden" name="_method" value="PATCH">
+        <button type="submit">supprimée </button>
+        <a href="{{ path('categorie_edit', {'id': categorie.id}) }}" class="cancel-link">Annuler</a>
+    </form>
+{% endblock %}
