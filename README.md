@@ -51,3 +51,11 @@ php bin/console doctrine:fixtures:load
 - Category management
 - Product management
 - User-friendly interface
+
+- ######################################################################
+
+- ## Acknowledgment
+
+This project was developed during my internship at **Pixcod Digital Agency**.  
+Special thanks to the team for their guidance and support❤❤.
+
