@@ -19,7 +19,7 @@ A comprehensive management system with user authentication, category management,
 
 1. Clone the repository:
 ```bash
-git clone [REPOSITORY_URL]
+git clone https://github.com/Outhman444/-Dashboard_minimal.git
 ```
 
 2. Install dependencies:
