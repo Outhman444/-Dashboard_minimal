@@ -8,6 +8,16 @@
         width: 50%;
         margin-top: 20px;
     }
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        background-color: white;
+        height: 45px;
+        font-family: inherit;
+        margin-bottom: 15px;
+    }
     .titre {
         color: #101317;
         margin: 0;
@@ -125,6 +135,21 @@
             <input type="text" id="nom" name="nom" required value="{{ product.nom }}">
             {% if errors.nom is defined %}
                 <div style="color:red; font-size: 0.9em;">{{ errors.nom[0] }}</div>
+            {% endif %}
+        </div>
+        
+        <div>
+            <label for="categorie">Catégorie :</label>
+            <select id="categorie" name="categorie" class="form-control" required>
+                <option value="">Sélectionnez une catégorie</option>
+                {% for categorie in categories %}
+                    <option value="{{ categorie.id }}" {{ product.categorie and product.categorie.id == categorie.id ? 'selected' : '' }}>
+                        {{ categorie.nom }}
+                    </option>
+                {% endfor %}
+            </select>
+            {% if errors.categorie is defined %}
+                <div style="color:red; font-size: 0.9em;">{{ errors.categorie[0] }}</div>
             {% endif %}
         </div>
 

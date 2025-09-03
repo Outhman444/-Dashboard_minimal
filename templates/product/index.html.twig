@@ -122,12 +122,13 @@ th, td{
 
   <h1 class="titre">Liste des produits</h1>
 
-  <table>
+<table>
     <thead>
       <tr>
         <th>Nom Produit</th>
         <th>Prix</th>
         <th>Quantité</th>
+        <th>Catégorie</th>
         <th>Statut</th>
         <th>Actions</th>
       </tr>
@@ -141,6 +142,7 @@ th, td{
         <td>{{ product.nom }}</td>
         <td>{{ product.prix }} MAD</td>
         <td>{{ product.quantite }}</td>
+        <td>{{ product.categorie ? product.categorie.nom : 'vide' }}</td>
         <td>Actif</td>
         <td class="actions">
           <a href="{{ path('product_edit', {'id': product.id}) }}" class="edit">Modifier</a>
@@ -152,10 +154,11 @@ th, td{
 
   {% if not hasActive %}
     <tr>
-      <td colspan="5">Aucun produit actif trouvé.</td>
+      <td colspan="6">Aucun produit actif trouvé.</td>
     </tr>
   {% endif %}
 </tbody>
+
 
   </table>
 

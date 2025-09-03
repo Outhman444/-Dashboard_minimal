@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
+use App\Repository\CategorieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,13 +48,26 @@ final class ProductController extends AbstractController
 
 
 
+#[Route('/product/new/{categoryId}', name: 'product_new',methods: ['GET', 'POST'],defaults: ['categoryId' => null],requirements: ['categoryId' => '\\d+'])]
+public function newProduct(Request $request,EntityManagerInterface $em,ValidatorInterface $validator,CategorieRepository $categorieRepository,?int $categoryId = null
+): Response {
+    // hna kanjib l ctegorie
+    $categories = $categorieRepository->findAll();
 
-#[Route('/product/new', name: 'product_new', methods: ['GET', 'POST'])]
-public function newProduct(Request $request, EntityManagerInterface $em, ValidatorInterface $validator): Response
-{
     if ($request->isMethod('GET')) {
+        $oldData = [];
+
+        if ($categoryId) {
+            
+            $existingCategorie = $categorieRepository->find($categoryId);
+            if ($existingCategorie !== null) {
+                $oldData['categorie'] = $categoryId;
+            }
+        }
+
         return $this->render('product/new.html.twig', [
-            'oldData' => [],
+            'categories' => $categories,
+            'oldData' => $oldData,
             'errors' => [],
         ]);
     }
@@ -65,6 +79,12 @@ public function newProduct(Request $request, EntityManagerInterface $em, Validat
     $product->setDescription($request->request->get('description'));
     $product->setStatus($request->request->get('status') == '1');
 
+    $categorieId = $request->request->get('categorie');
+    if ($categorieId) {
+        $categorie = $categorieRepository->find($categorieId);
+        $product->setCategorie($categorie);
+    }
+
     $errors = $validator->validate($product);
 
     if (count($errors) > 0) {
@@ -75,6 +95,7 @@ public function newProduct(Request $request, EntityManagerInterface $em, Validat
         }
 
         return $this->render('product/new.html.twig', [
+            'categories' => $categories,
             'errors' => $errorMessages,
             'oldData' => $request->request->all(),
         ]);
@@ -96,23 +117,40 @@ public function newProduct(Request $request, EntityManagerInterface $em, Validat
 
 
 
+
  #[Route('/product/{id}', name: 'product_edit', methods: ['GET', 'POST'])]
-    public function editProduct(int $id, Request $request, EntityManagerInterface $em, ValidatorInterface $validator): Response
+    public function editProduct(int $id, Request $request, EntityManagerInterface $em, ValidatorInterface $validator, CategorieRepository $categorieRepository): Response
     {
         $product = $em->getRepository(Product::class)->find($id);
         if (!$product) {
             throw $this->createNotFoundException('Produit introuvable');
         }
 
+       
+        $categories = $categorieRepository->findAll();
+
         if ($request->isMethod('GET')) {
-            return $this->render('product/edit.html.twig', ['product' => $product]);
+            return $this->render('product/edit.html.twig', [
+                'product' => $product,
+                'categories' => $categories,
+                'errors' => []
+            ]);
         }
 
         $product->setNom($request->request->get('nom'));
-    $product->setPrix((float) $request->request->get('prix'));
+        $product->setPrix((float) $request->request->get('prix'));
         $product->setQuantite($request->request->get('quantite'));
         $product->setDescription($request->request->get('description'));
         $product->setStatus($request->request->get('status') == '1');
+        
+        // hna kanjib l categorie
+        $categorieId = $request->request->get('categorie');
+        if ($categorieId) {
+            $categorie = $categorieRepository->find($categorieId);
+            $product->setCategorie($categorie);
+        } else {
+            $product->setCategorie(null);
+        }
 
         $errors = $validator->validate($product);
 
@@ -125,6 +163,7 @@ public function newProduct(Request $request, EntityManagerInterface $em, Validat
 
             return $this->render('product/edit.html.twig', [
                 'product' => $product,
+                'categories' => $categories,
                 'errors' => $errorMessages,
             ]);
         }

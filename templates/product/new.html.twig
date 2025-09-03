@@ -108,6 +108,19 @@
 		cursor: default;
 		margin-top: 30px;
 	}
+select {
+    width: 50%;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    box-sizing: border-box;
+    height: 45px;
+    font-family: inherit;
+    font-size: 1rem;
+    appearance: none; 
+}
+
 </style>
 
 <h1 class="titre">Ajouter un produit</h1>
@@ -121,48 +134,65 @@
 
 <form action="{{ path('product_new') }}" method="POST">
 
-	<div class="row_1">
-		<div>
-			<label for="nom">Nom :</label>
-			<input type="text" id="nom" name="nom"  value="{{ oldData.nom|default('') }}">
-			{% if errors.nom is defined %}
-				<div style="color:red; font-size: 0.9em;">{{ errors.nom[0] }}</div>
-			{% endif %}
-		</div>
+    <div class="row_1">
+        <div>
+            <label for="nom">Nom :</label>
+            <input type="text" id="nom" name="nom" value="{{ oldData.nom|default('') }}">
+            {% if errors.nom is defined %}
+                <div style="color:red; font-size: 0.9em;">{{ errors.nom[0] }}</div>
+            {% endif %}
+        </div>
 
-		<div class="container_prix">
-			<div style="flex: 1;">
-				<label for="prix">Prix :</label>
-				<input type="text" step="0.01" id="prix" name="prix" value="{{ oldData.prix|default('') }}">
-				{% if errors.prix is defined %}
-					<div style="color:red; font-size: 0.9em;">{{ errors.prix[0] }}</div>
-				{% endif %}
-			</div>
-			<label class="curancy" for="prix">MAD</label>
-		</div>
-	</div>
+        <div class="container_prix">
+            <div style="flex: 1;">
+                <label for="prix">Prix :</label>
+                <input type="text" step="0.01" id="prix" name="prix" value="{{ oldData.prix|default('') }}">
+                {% if errors.prix is defined %}
+                    <div style="color:red; font-size: 0.9em;">{{ errors.prix[0] }}</div>
+                {% endif %}
+            </div>
+            <label class="curancy" for="prix">MAD</label>
+        </div>
+    </div>
 
-	<div class="row_2">
-		<div>
-			<label for="description">Description :</label>
-			<textarea id="description" name="description" >{{ oldData.description|default('') }}</textarea>
-			{% if errors.description is defined %}
-				<div style="color:red; font-size: 0.9em;">{{ errors.description[0] }}</div>
-			{% endif %}
-		</div>
+    <div class="row_2">
+        <div>
+            <label for="description">Description :</label>
+            <textarea id="description" name="description">{{ oldData.description|default('') }}</textarea>
+            {% if errors.description is defined %}
+                <div style="color:red; font-size: 0.9em;">{{ errors.description[0] }}</div>
+            {% endif %}
+        </div>
 
-		<div>
-			<label for="quantite">Quantité :</label>
-			<input type="text" id="quantite" name="quantite">
-			{% if errors.quantite is defined %}
-				<div style="color:red; font-size: 0.9em;">{{ errors.quantite[0] }}</div>
-			{% endif %}
-		</div>
-	</div>
+        <div>
+            <label for="quantite">Quantité :</label>
+            <input type="text" id="quantite" name="quantite" value="{{ oldData.quantite|default('') }}">
+            {% if errors.quantite is defined %}
+                <div style="color:red; font-size: 0.9em;">{{ errors.quantite[0] }}</div>
+            {% endif %}
+        </div>
+    </div>
 
-	<input type="hidden" name="status" value="1">
+    <div>
+         <label for="categorie">Catégorie :</label>
+    <select id="categorie" name="categorie">
+        <option value="">Choisir une catégorie</option>
+        {% for categorie in categories %}
+            <option value="{{ categorie.id }}"
+                {% if oldData.categorie is defined and oldData.categorie == categorie.id %}selected{% endif %}>
+                {{ categorie.nom }}
+            </option>
+        {% endfor %}
+    </select>
+    {% if errors.categorie is defined %}
+        <div style="color:red; font-size: 0.9em;">{{ errors.categorie[0] }}</div>
+    {% endif %}
+    </div>
 
-	<button class="submit-btn" type="submit">Ajouter</button>
+    <input type="hidden" name="status" value="1">
+
+    <button class="submit-btn" type="submit">Ajouter</button>
 </form>
+
 
 {% endblock %}
