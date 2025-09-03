@@ -5,6 +5,24 @@ A dashboard project built with the Symfony framework.
 ## Description
 A comprehensive management system with user authentication, category management, and product management features.
 
+
+## Screenshots of the Project
+
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+
+  <img src="https://github.com/user-attachments/assets/f2dccdab-da87-487e-a36c-3c01ceec4bb2" alt="Product" width="300" />
+  
+  <img src="https://github.com/user-attachments/assets/38ed5888-9c79-4656-9b85-f5b09d29fb58" alt="Ajouter un product" width="300" />
+  <img src="https://github.com/user-attachments/assets/4fc7083a-603d-46d2-9c86-2a240d99fb28" alt="Login" width="300" />
+  <img src="https://github.com/user-attachments/assets/38210d26-7475-44fd-bdfb-bb7991459f2a" alt="Login" width="300" />
+    
+    
+
+
+
+</div>
+
+
 ## Developer
 - **Outmane Yasyn**
 
