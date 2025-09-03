@@ -50,7 +50,7 @@ php bin/console doctrine:fixtures:load
 - User and role management
 - Category management
 - Product management
-- User-friendly interface
+
 
 - ######################################################################
 
